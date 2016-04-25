@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true" scanPeriod="300 seconds">
+
+	<contextName>logbackContext</contextName>
+	<!-- this helps to improve performances by reducing unnecessary log initialization -->
+	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+		<resetJUL>true</resetJUL>
+	</contextListener>
+
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+
+			<pattern>[%d] %-5p %c- %m%n</pattern>
+		</encoder>
+	</appender>
+
+	<property name="com.mchange.v2.log.MLog" value="com.mchange.v2.log.log4j.Log4jMLog" />
+	<property name="com.mchange.v2.log.NameTransformer" value="com.mchange.v2.log.PackageNames" />
+	<property name="com.mchange.v2.log.FallbackMLog.DEFAULT_CUTOFF_LEVEL"
+		value="WARN" />
+
+	<appender name="fileAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.home}/logs/SpringAngularPractice/SpringAngularPractice.log</file>
+		<append>true</append>
+
+		<encoder>
+			<pattern>[%d] %-5p %c- %m%n</pattern>
+		</encoder>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${catalina.home}/logs/SpringAngularPractice/SpringAngularPractice.%i.log
+			</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>10</MaxIndex>
+		</rollingPolicy>
+
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>2MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+
+	<root level="INFO">
+		<appender-ref ref="fileAppender" />
+		<appender-ref ref="STDOUT" />
+	</root>
+
+</configuration>
